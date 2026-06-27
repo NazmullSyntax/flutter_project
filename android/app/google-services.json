@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "3136557525",
+    "project_id": "goapp-5513d",
+    "storage_bucket": "goapp-5513d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3136557525:android:2dfa13e3626c1efc0f2d5c",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTgCVlFpf9SqH2wALd1HzRC8Gb3hLBeZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

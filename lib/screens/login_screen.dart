@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/screens/district_explorer_screen.dart';
+import 'package:flutter_application_2/screens/registration_screen.dart';
+import 'package:flutter_application_2/services/auth_service.dart';
 import 'package:flutter_application_2/utils/colors.dart';
 import 'package:flutter_application_2/utils/text_styles.dart';
 import 'package:flutter_application_2/widgets/custom_textfield.dart';
@@ -64,12 +67,26 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return null;
   }
 
-  void _onSignInTap() {
+  Future<void> _onSignInTap() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final navigator = Navigator.of(context);
+      final messenger = ScaffoldMessenger.of(context);
       FocusScope.of(context).unfocus();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Signing in...')),
-      );
+      try {
+        await AuthService.signIn(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+        if (!mounted) return;
+        navigator.pushReplacement(
+          MaterialPageRoute(builder: (_) => const DistrictExplorerScreen()),
+        );
+      } catch (error) {
+        if (!mounted) return;
+        messenger.showSnackBar(
+          SnackBar(content: Text(error.toString())),
+        );
+      }
     }
   }
 
@@ -94,7 +111,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildBrandHeader(),
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Image.asset(
+                        'assets/images/images/logo.png',
+                        height: 120,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                     _buildCard(context),
                   ],
                 ),
@@ -117,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             gradient: AppColors.primaryGradient,
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.18),
+                color: AppColors.primary.withAlpha(46),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -228,7 +253,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               children: [
                 const Text('Don\'t have an account?', style: TextStyle(color: AppColors.hint)),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const RegistrationScreen()),
+                    );
+                  },
                   child: const Text('Sign Up', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700)),
                 ),
               ],
